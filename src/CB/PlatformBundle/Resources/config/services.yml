@@ -1,0 +1,4 @@
+services:
+#    cb_platform.example:
+#        class: CB\PlatformBundle\Example
+#        arguments: [@service_id, "plain_value", %parameter%]

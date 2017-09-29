@@ -1,0 +1,62 @@
+{# app/Resources/views/layout.html.twig #}
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>{% block title %}CB Plateforme{% endblock %}</title>
+
+  {% block stylesheets %}
+    {# On charge le CSS de bootstrap depuis le site directement #}
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+  {% endblock %}
+</head>
+
+<body>
+  <div class="container">
+    <div id="header" class="jumbotron">
+      <h1>Blog dédié aux échecs</h1>
+      <p>
+        Pour le passionnés d'échecs !
+      </p>
+      <p>
+        <a class="btn btn-primary btn-lg" href="https://chess.com">
+          Un très bon site pour jouer »
+        </a>
+      </p>
+    </div>
+
+    <div class="row">
+      <div id="menu" class="col-md-3">
+        <h3>Les bons liens pour progrésser</h3>
+        <ul class="nav nav-pills nav-stacked">
+          <li><a href="{{ path('cb_platform_home') }}">Accueil</a></li>
+          <li><a href="{{ path('cb_platform_add') }}">Ajouter un lien</a></li>
+        </ul>
+
+        <h4>Dernièrs liens</h4>
+        {{ render(controller("CBPlatformBundle:Advert:menu", {'limit': 3})) }}
+      </div>
+      <div id="content" class="col-md-9">
+        {% block body %}
+        {% endblock %}
+      </div>
+    </div>
+
+    <hr>
+
+    <footer>
+      <p>You will become addicted to this game !</p>
+    </footer>
+  </div>
+
+  {% block javascripts %}
+    {# Ajoutez ces lignes JavaScript si vous comptez vous servir des fonctionnalités du bootstrap Twitter #}
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+  {% endblock %}
+
+</body>
+</html>

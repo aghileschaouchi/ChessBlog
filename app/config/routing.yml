@@ -1,0 +1,4 @@
+cb_platform:
+    resource: "@CBPlatformBundle/Resources/config/routing.yml"
+    prefix:   /
+

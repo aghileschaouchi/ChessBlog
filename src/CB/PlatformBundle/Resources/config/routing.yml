@@ -1,0 +1,21 @@
+# src/CB/PlatformBundle/Resources/config/routing.yml
+
+cb_platform_home:
+    path:      /{page}
+    defaults:
+        _controller: CBPlatformBundle:Advert:index
+        page:        1
+    requirements:
+        page: \d*
+
+cb_platform_add:
+    path:      /add
+    defaults:
+        _controller: CBPlatformBundle:Advert:add
+
+cb_platform_view:
+    path:      /advert/{id}
+    defaults:
+        _controller: CBPlatformBundle:Advert:view
+    requirements:
+        id: \d+

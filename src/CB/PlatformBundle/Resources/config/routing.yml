@@ -19,3 +19,17 @@ cb_platform_view:
         _controller: CBPlatformBundle:Advert:view
     requirements:
         id: \d+
+
+cb_platform_edit:
+    path:     /edit/{id}
+    defaults:
+        _controller: CBPlatformBundle:Advert:edit
+    requirements:
+        id: \d+
+
+cb_platform_delete:
+    path:     /delete/{id}
+    defaults:
+        _controller: CBPlatformBundle:Advert:delete
+    requirements:
+        id: \d+

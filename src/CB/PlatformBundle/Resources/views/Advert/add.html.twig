@@ -1,33 +1,16 @@
-{# src/CB/PlatformBundle/Resources/view/Advert/view.html.twig #}
+{# src/CB/PlatformBundle/Resources/views/Advert/add.html.twig #}
 
 {% extends "CBPlatformBundle::layout.html.twig" %}
 
-{% block title %}
-  Lecture d'une annonce - {{ parent() }}
-{% endblock %}
+{% block body %}
 
-{% block cbplatform_body %}
+  <h2>Ajouter une annonce</h2>
 
-  <h2>{{ advert.title }}</h2>
-  <i>Par {{ advert.author }}, le {{ advert.date|date('d/m/Y') }}</i>
-
-  <div class="well">
-    {{ advert.content }}
-  </div>
+  {{ include("CBPlatformBundle:Advert:form.html.twig") }}
 
   <p>
-    <a href="{{ path('cb_platform_home') }}" class="btn btn-default">
-      <i class="glyphicon glyphicon-chevron-left"></i>
-      Retour à la liste
-    </a>
-    <a href="{{ path('cb_platform_edit', {'id': advert.id}) }}" class="btn btn-default">
-      <i class="glyphicon glyphicon-edit"></i>
-      Modifier le lien
-    </a>
-    <a href="{{ path('cb_platform_delete', {'id': advert.id}) }}" class="btn btn-danger">
-      <i class="glyphicon glyphicon-trash"></i>
-      Supprimer le lien
-    </a>
+    Attention : cette annonce sera ajoutée directement
+    sur la page d'accueil après validation du formulaire.
   </p>
 
 {% endblock %}

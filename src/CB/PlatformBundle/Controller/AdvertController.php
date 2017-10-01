@@ -6,7 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpFoundation\Response;
-
+use CB\PlatformBundle\Entity\Advert;
 
 class AdvertController extends Controller
 {
@@ -48,34 +48,38 @@ class AdvertController extends Controller
       return $this->render('CBPlatformBundle:Advert:index.html.twig', array(
         'listAdverts' => $listAdverts
       ));
+    
     }
 
-    public function addAction($id, Request $request)
+    public function addAction(Request $request)
     {
-        // La gestion d'un formulaire est particulière, mais l'idée est la suivante :
+      //Création de l'entité
+      $advert = new Advert();
+      $advert->setTitle('Rechérche un développeur Symfony');
+      $advert->setAuthor('Aghiles');
+      $advert->setContent('Nous recherchons un développeur Symfony afin de consolider notre code');
 
-        // Si la requête est en POST, c'est que le visiteur a soumis le formulaire
-        if ($request->isMethod('POST')) {
-            // Ici, on s'occupera de la création et de la gestion du formulaire
+      //On récupère l'EntityManager
+      $em = $this->getDoctrine()->getManager();
 
-            $request->getSession()->getFlashBag()->add('notice', 'Lien bien enregistrée.');
+      //Etape1:  on persiste l'entité
+      $em->persist($advert);
 
-            // Puis on redirige vers la page de visualisation de cettte annonce
-            return $this->redirectToRoute('cb_platform_view', array('id' => 5));
-        }
+      //Etape2: on flush tout ce qui a été persisté avant
+      $em->flush();
+      
+      // La gestion d'un formulaire est particulière, mais l'idée est la suivante :
 
-        $advert = array(
-        'title'   => 'http://www.jouerauxechecs.fr/',
-        'id'      => $id,
-        'author'  => 'Aghiles',
-        'content' => 'Un bon site pour jouer aux échecs',
-        'date'    => new \Datetime()
-        );
+      // Si la requête est en POST, c'est que le visiteur a soumis le formulaire
+      if ($request->isMethod('POST')) {
+          // Ici, on s'occupera de la création et de la gestion du formulaire
+          $request->getSession()->getFlashBag()->add('notice', 'Lien bien enregistrée.');
 
-        // Si on n'est pas en POST, alors on affiche le formulaire
-        return $this->render('CBPlatformBundle:Advert:add.html.twig', array(
-        'advert' => $advert
-        ));
+          // Puis on redirige vers la page de visualisation de cettte annonce
+          return $this->redirectToRoute('cb_platform_view', array('id' => $advert->getId()));
+      }
+      //Si on est pas en POST, alors on affiche le formulaire
+      return $this->render('CBPlatformBundle:Advert:add.html.twig', array('advert' => $advert));
     }
 
     public function menuAction($limit)
@@ -92,6 +96,28 @@ class AdvertController extends Controller
         // Tout l'intérêt est ici : le contrôleur passe
         // les variables nécessaires au template !
         'listAdverts' => $listAdverts
+      ));
+    }
+
+    public function viewAction($id)
+    {
+      //On récupére le repository
+      $repository = $this->getDoctrine()
+      ->getManager()
+      ->getRepository('CBPlatformBundle:Advert');
+
+      //On récupére l'entité correspondant à id
+      $advert = $repository->find($id);
+
+      // $advert est un instance de CB\PlatformBundle\Advert
+      // Ou null si l'id n'existe pas
+      if (null === $advert){
+        throw new Exception("L'annonce d'id ".$id."n'existe pas !");
+      }
+
+      //Le render ne change pas, avant on passait un tableau, maintenant un objet
+      return $this->render('CBPlatformBundle:Advert:view.html.twig',array(
+        'advert' => $advert
       ));
     }
 }
